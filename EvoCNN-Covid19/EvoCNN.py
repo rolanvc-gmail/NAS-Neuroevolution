@@ -10,34 +10,53 @@ class CNNLayer(object):
     def __init__(self, initialization):
         self.initialization = initialization
 
+    def __repr__(self):
+        return 'C-'
+
+
 
 class PoolingLayer(object):
     def __init__(self, initialization):
         self.initialization = initialization
+
+    def __repr__(self):
+        return 'P-'
 
 
 class FCLayer(object):
     def __init__(self, initialization):
         self.initialization = initialization
 
+    def __repr__(self):
+        return 'FC-'
+
 
 class CNNEntity(object):
-    pass
+    def __init__(self, layers):
+        self.layers = layers
+
+    def __repr__(self):
+        repr = ""
+        for l in self.layers:
+            repr = repr + str(l)
+
+        return repr
 
 
 class EvoCNN(object):
     def __init__(self, population_size, max_init_convs, max_init_fc):
         self.population = []
         self.population_size = population_size
-        while len(self.population < self.population_size):
-            cnn_entity = self.generate_random_individual(max_init_convs, max_init_fc)
-            self.population.append(cnn_entity)
+        self.max_init_convs = max_init_convs
+        self.max_init_fc = max_init_fc
 
     @staticmethod
     def generate_random_individual(max_init_convs, max_init_fc):
         n_convs = random.randint(0, max_init_convs)
         layers = []
         n_fcs = random.randint(0, max_init_fc)
+        cnn_layer = CNNLayer(Initialization.RANDOM)
+        layers.append(cnn_layer)
         for i in range(n_convs):
             flip = random.random()
             if flip <= 0.5:
@@ -55,7 +74,11 @@ class EvoCNN(object):
         return cnn_entity
 
     def build_initial_population(self):
-        pass
+        while len(self.population) <= self.population_size:
+            cnn_entity = self.generate_random_individual(self.max_init_convs, self.max_init_fc)
+            self.population.append(cnn_entity)
+
+        print(self.population)
 
     def do_evolution(self):
         pass
