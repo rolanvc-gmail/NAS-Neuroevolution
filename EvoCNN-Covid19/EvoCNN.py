@@ -1,46 +1,6 @@
 import random
-from enum import Enum
-
-
-class Initialization(Enum):
-    RANDOM = 0
-
-
-class CNNLayer(object):
-    def __init__(self, initialization):
-        self.initialization = initialization
-
-    def __repr__(self):
-        return 'C-'
-
-
-
-class PoolingLayer(object):
-    def __init__(self, initialization):
-        self.initialization = initialization
-
-    def __repr__(self):
-        return 'P-'
-
-
-class FCLayer(object):
-    def __init__(self, initialization):
-        self.initialization = initialization
-
-    def __repr__(self):
-        return 'FC-'
-
-
-class CNNEntity(object):
-    def __init__(self, layers):
-        self.layers = layers
-
-    def __repr__(self):
-        repr = ""
-        for l in self.layers:
-            repr = repr + str(l)
-
-        return repr
+from CNNEntity import CNNEntity, Initialization
+from CNNEntity import CNNLayer, PoolingLayer, FCLayer
 
 
 class EvoCNN(object):
@@ -49,6 +9,7 @@ class EvoCNN(object):
         self.population_size = population_size
         self.max_init_convs = max_init_convs
         self.max_init_fc = max_init_fc
+        self.generations = 0
 
     @staticmethod
     def generate_random_individual(max_init_convs, max_init_fc):
@@ -80,8 +41,34 @@ class EvoCNN(object):
 
         print(self.population)
 
-    def do_evolution(self):
+    def not_finished(self):
+        """
+        :return: True if evolution should continue; else False
+        """
+        self.generations += 1
+        if self.generations < 10:
+            return True
+        else:
+            return False
+
+    def evaluate_individual_fitness(self):
+        # Todo: finish this
+        for s in self.population:
+            pass
+
+    def select_parents(self):
+        # Todo: finish this
         pass
+
+    def generate_offspring(self):
+        pass
+        # Todo: finish this
+
+    def do_evolution(self):
+        while self.not_finished():
+            self.evaluate_individual_fitness()
+            P = self.select_parents()
+            Q = self.generate_offspring()
 
     def get_best(self):
         pass
